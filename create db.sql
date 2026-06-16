@@ -1,8 +1,8 @@
 -- --------------------------------------------------
 -- membuat database bioskop
 -- --------------------------------------------------
-CREATE DATABASE cinema_ticketing 
-USE cinema_ticketing
+CREATE DATABASE cinema_ticketing; 
+USE cinema_ticketing;
 
 -- --------------------------------------------------
 -- Table film
@@ -10,8 +10,10 @@ USE cinema_ticketing
 CREATE TABLE films (
     film_id VARCHAR(10) NOT NULL,
     judul VARCHAR(100) NOT NULL,
-    durasi_menit DATETIME NOT NULL,
+    durasi_menit INT NOT NULL, 
     deskripsi TEXT NOT NULL,
+    genre VARCHAR(50) NOT NULL,     
+    sutradara VARCHAR(100) NOT NULL,  
     CONSTRAINT pk_films PRIMARY KEY (film_id) 
 );
 
@@ -47,11 +49,11 @@ CREATE TABLE alamat (
     kota VARCHAR(100) NOT NULL,
     provinsi VARCHAR(100) NOT NULL,
     kodepos VARCHAR(10),
-    CONSTRAINT pk_alamat PRIMARY KEY (alamat_id),
+    CONSTRAINT pk_alamat PRIMARY KEY (alamat_id)
 );
 
 -- --------------------------------------------------
--- Table customers
+-- Table Pelanggan (customers)
 -- --------------------------------------------------
 CREATE TABLE pelanggan (
     pelanggan_id VARCHAR(10) NOT NULL,
@@ -72,7 +74,7 @@ CREATE TABLE pemesanan (
     pemesanan_id VARCHAR(10) NOT NULL,
     screening_id VARCHAR(10) NOT NULL,
     pelanggan_id VARCHAR(10) NOT NULL,
-    lunas TINYINT NOT NULL,
+    status_pemesanan ENUM('Belum Bayar', 'Lunas', 'Dibatalkan') NOT NULL DEFAULT,
     harga_tiket DECIMAL (10,2) NOT NULL,
     CONSTRAINT pk_pemesanan PRIMARY KEY (pemesanan_id),
     CONSTRAINT fk_pemesanan_screening FOREIGN KEY (screening_id) REFERENCES screenings (screening_id),
@@ -88,11 +90,11 @@ CREATE TABLE seats (
     no_kursi INT(11) NOT NULL,
     studio_id VARCHAR(10) NOT NULL,
     CONSTRAINT pk_seats PRIMARY KEY (seat_id),
-    CONSTRAINT fk_seats_studio FOREIGN KEY (studio_id) REFERENCES studio(studio_id)
+    CONSTRAINT fk_seats_studio FOREIGN KEY (studio_id) REFERENCES studio (studio_id)
 );
 
 -- --------------------------------------------------
--- Table seats (kursi)
+-- Table reservasi
 -- --------------------------------------------------
 CREATE TABLE reservasi (
     reservasi_id VARCHAR(10) NOT NULL,
@@ -101,4 +103,16 @@ CREATE TABLE reservasi (
     CONSTRAINT pk_reservasi PRIMARY KEY (reservasi_id),
     CONSTRAINT fk_reservasi_pemesanan FOREIGN KEY (pemesanan_id) REFERENCES pemesanan (pemesanan_id),
     CONSTRAINT fk_reservasi_seat FOREIGN KEY (seat_id) REFERENCES seats (seat_id)
+);
+-- --------------------------------------------------
+-- Table pembatalan
+-- --------------------------------------------------
+CREATE TABLE pembatalan (
+    pembatalan_id VARCHAR(10) NOT NULL,
+    pemesanan_id VARCHAR(10) NOT NULL,
+    waktu_pembatalan DATETIME NOT NULL,
+    alasan_pembatalan TEXT,
+    jumlah_refund DECIMAL(10,2) NOT NULL,
+    CONSTRAINT pk_pembatalan PRIMARY KEY (pembatalan_id),
+    CONSTRAINT fk_pembatalan_pemesanan FOREIGN KEY (pemesanan_id) REFERENCES pemesanan (pemesanan_id)
 );
