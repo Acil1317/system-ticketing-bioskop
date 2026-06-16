@@ -23,7 +23,7 @@ CREATE TABLE films (
 CREATE TABLE studio (
     studio_id VARCHAR(10) NOT NULL,
     nama VARCHAR(50) NOT NULL,
-    no_seats INT NOT NULL,
+    capacity INT NOT NULL,
     CONSTRAINT pk_studio PRIMARY KEY (studio_id)
 );
 
