@@ -74,7 +74,7 @@ CREATE TABLE pemesanan (
     pemesanan_id VARCHAR(10) NOT NULL,
     screening_id VARCHAR(10) NOT NULL,
     pelanggan_id VARCHAR(10) NOT NULL,
-    status_pemesanan ENUM('Belum Bayar', 'Lunas', 'Dibatalkan') NOT NULL DEFAULT,
+    status_pemesanan ENUM('Belum Bayar', 'Lunas', 'Dibatalkan') NOT NULL,
     harga_tiket DECIMAL (10,2) NOT NULL,
     CONSTRAINT pk_pemesanan PRIMARY KEY (pemesanan_id),
     CONSTRAINT fk_pemesanan_screening FOREIGN KEY (screening_id) REFERENCES screenings (screening_id),
