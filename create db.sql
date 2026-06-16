@@ -10,10 +10,10 @@ USE cinema_ticketing;
 CREATE TABLE films (
     film_id VARCHAR(10) NOT NULL,
     judul VARCHAR(100) NOT NULL,
-    durasi_menit INT NOT NULL, 
-    deskripsi TEXT NOT NULL,
-    genre VARCHAR(50) NOT NULL,     
+    genre VARCHAR(50) NOT NULL, 
+    durasi_menit INT NOT NULL,
     sutradara VARCHAR(100) NOT NULL,  
+    deskripsi TEXT NOT NULL,    
     CONSTRAINT pk_films PRIMARY KEY (film_id) 
 );
 
