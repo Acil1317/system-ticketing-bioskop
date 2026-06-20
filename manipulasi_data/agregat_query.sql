@@ -1,29 +1,39 @@
 -- --------------------------------------------------
 -- COUNT (Menghitung berapa banyak sesi tayang (screening) untuk film tertentu)
 -- --------------------------------------------------
-SELECT COUNT(*) AS total_tayang 
+SELECT 
+    film_id, 
+    COUNT(*) AS total_tayang 
 FROM screenings 
-WHERE film_id = 'F014';
+WHERE film_id = 'F014'
+GROUP BY film_id;
 
 -- --------------------------------------------------
--- SUM (Menghitung total kapasitas semua studio yang ada di bioskop)
--- --------------------------------------------------
-SELECT SUM(capacity) AS total_seluruh_kursi 
-FROM studio;
-
--- --------------------------------------------------
--- MIN, MAX & AVERAGE (Melihat harga tiket tertinggi, terendah, dan rata-rata pendapatan dari tiket yang terjual)
+-- SUM (Menghitung total kapasitas kursi yang dikelompokkan per studio)
 -- --------------------------------------------------
 SELECT 
-    MAX(harga_tiket) AS tiket_termahal, 
-    MIN(harga_tiket) AS tiket_termurah, 
-    AVG(harga_tiket) AS rata_rata_harga
-FROM pemesanan;
+    nama,
+    SUM(capacity) AS total_kursi_studio 
+FROM studio
+GROUP BY studio_id;
 
 -- --------------------------------------------------
--- GROUP BY dengan ROLLUP (Melihat jumlah kursi yang direservasi oleh setiap pemesanan, lengkap dengan total keseluruhan di baris paling bawah)
+-- MIN, MAX & AVERAGE (Melihat statistik pengeluaran tiket per pelanggan)
 -- --------------------------------------------------
-SELECT pemesanan_id, COUNT(seat_id) AS jumlah_kursi_dipesan
+SELECT 
+    pelanggan_id, 
+    MAX(harga_tiket) AS tiket_termahal_dibeli, 
+    MIN(harga_tiket) AS tiket_termurah_dibeli, 
+    AVG(harga_tiket) AS rata_rata_pengeluaran_tiket
+FROM pemesanan
+GROUP BY pelanggan_id;
+
+-- --------------------------------------------------
+-- GROUP BY dengan ROLLUP + COALESCE (Tampilan Total Lebih Rapi)
+-- --------------------------------------------------
+SELECT 
+    COALESCE(pemesanan_id, ' TOTAL KESELURUHAN ') AS pemesanan_id, 
+    COUNT(seat_id) AS jumlah_kursi_dipesan
 FROM reservasi
 GROUP BY pemesanan_id WITH ROLLUP;
 
@@ -37,13 +47,15 @@ GROUP BY f.judul, s.film_id
 HAVING COUNT(s.screening_id) > 3;
 
 -- --------------------------------------------------
--- -- SUBQUERY: Mengambil total tayang film 'Avatar' berdasarkan film_id
+-- -- SUBQUERY: Mengambil total tayang film berdasarkan film_id
 -- --------------------------------------------------
-SELECT COUNT(*) AS total_tayang
-FROM screenings
+SELECT 
+    (SELECT judul FROM films WHERE film_id = "F016" LIMIT 1) AS judul_film,
+    COUNT(*) AS total_tayang 
+FROM screenings 
 WHERE film_id = (
     SELECT film_id 
     FROM films 
-    WHERE film_id = "F001" 
+    WHERE film_id = "F016" 
     LIMIT 1
 );
