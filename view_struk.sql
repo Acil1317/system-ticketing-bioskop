@@ -4,7 +4,7 @@
 CREATE OR REPLACE VIEW view_struk_transaksi AS
 SELECT 
     p.pemesanan_id AS 'NOMOR NOTA',
-    pl.nama AS 'NAMA PELANGGAN',
+    CONCAT_WS(' ', pl.nama_depan, pl.nama_belakang) AS nama_pelanggan, 
     f.judul AS 'JUDUL FILM',
     s.waktu_mulai AS 'JAM TAYANG',
     st.nama AS 'STUDIO',
