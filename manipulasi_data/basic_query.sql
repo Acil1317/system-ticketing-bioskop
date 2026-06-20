@@ -2,7 +2,7 @@
 -- INSERT, UPDATE, DELETE
 -- --------------------------------------------------
 INSERT INTO pelanggan (pelanggan_id, nama_depan, nama_belakang, gender, email, no_telp, alamat_id) VALUES
-('C051', 'Bihlal', 'Subianto', 'L', 'minyak.sawit@email.com', '085267677676', 'A009'),
+('C051', 'Bihlal', 'Subianto', 'L', 'minyak.sawit@email.com', '085267677676', 'A009');
 SELECT * FROM cinema_ticketing.pelanggan;
 
 UPDATE reservasi 
